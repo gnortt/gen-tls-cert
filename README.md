@@ -18,6 +18,6 @@ Required dependencies:
     > ./gen-tls-cert.sh example rootCA example.com 2048 365
     > ls example
 
-    01.pem  ca.key           example.com.csr  index.txt       index.txt.old  serial.old
-    ca.crt  example.com.crt  example.com.key  index.txt.attr  serial
+    01.pem  ca.key      example.com.crt  example.com.key  index.txt.attr  serial
+    ca.crt  dh2048.pem  example.com.csr  index.txt        index.txt.old   serial.old
 ```

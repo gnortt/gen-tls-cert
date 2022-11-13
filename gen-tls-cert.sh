@@ -56,6 +56,9 @@ openssl ca \
     -days $DAYS \
     -in "$OUT_DIR/$SERVER_CN.csr" \
     -out "$OUT_DIR/$SERVER_CN.crt"
-    
+
+openssl dhparam \
+    -out "$OUT_DIR/dh$KEY_SIZE.pem" $KEY_SIZE
+
 chmod 0600 "$OUT_DIR"/ca.key
 chmod 0600 "$OUT_DIR/$SERVER_CN.key"
