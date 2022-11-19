@@ -31,7 +31,6 @@ name=optional
 emailAddress=optional
 
 [ req ]
-default_bits=$ENV::KEY_SIZE
 default_keyfile=privkey.pem
 distinguished_name=req_distinguished_name
 x509_extensions=v3_ca
@@ -62,9 +61,9 @@ basicConstraints=CA:FALSE
 keyUsage=nonRepudiation,digitalSignature,keyEncipherment
 
 [ v3_ca ]
+basicConstraints=CA:TRUE
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid:always,issuer:always
-basicConstraints=CA:true
 
 [ crl_ext ]
 authorityKeyIdentifier=keyid:always,issuer:always
