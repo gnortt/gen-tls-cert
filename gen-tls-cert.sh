@@ -33,6 +33,7 @@ openssl req \
     -sha256 \
     -days $DAYS \
     -newkey rsa:$KEY_SIZE \
+    -newkey ec:<(openssl ecparam -name secp384r1) \
     -keyout "$OUT_DIR"/ca.key \
     -out "$OUT_DIR"/ca.crt
 
@@ -43,7 +44,7 @@ openssl req \
     -nodes \
     -extensions server \
     -new \
-    -newkey rsa:$KEY_SIZE \
+    -newkey ec:<(openssl ecparam -name secp384r1) \
     -keyout "$OUT_DIR/$SERVER_CN.key" \
     -out "$OUT_DIR/$SERVER_CN.csr"
 

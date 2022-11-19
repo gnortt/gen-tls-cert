@@ -1,6 +1,8 @@
 # gen-tls-cert
 
-Self-signed TLS certificate generator script. Quickly generate a certificate authority and server TLS key and certificate.
+Self-signed TLS certificate generator. Quickly create a certificate authority and server key and certificate.
+
+Generated are CA and server `secp384r1` ECC keys, certificates, and Diffie-Hellman parameters (`dh[dh keysize].pem`).
 
 # Requirements
 
