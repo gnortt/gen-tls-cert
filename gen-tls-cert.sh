@@ -3,7 +3,7 @@
 set -e
 
 if [ $# -le 4 ]; then
-    echo "Usage: $0 [output directory] [ca cn] [server cn] [keysize] [days]"
+    echo "Usage: $0 [output directory] [ca cn] [server cn] [dh keysize] [days]"
     exit 1
 fi
 
@@ -21,8 +21,6 @@ echo $SERIAL > "$OUT_DIR"/serial
 touch "$OUT_DIR"/index.txt
 
 export KEY_DIR="$OUT_DIR"
-export KEY_SIZE=$KEY_SIZE
-
 export KEY_CN="$CA_CN"
 openssl req \
     -config "openssl.cnf" \
