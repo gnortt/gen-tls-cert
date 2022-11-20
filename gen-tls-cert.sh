@@ -23,7 +23,7 @@ export KEY_CN="$CA_CN"
 openssl req \
     -config "openssl.cnf" \
     -batch \
-    -noenc \
+    -noenv \
     -x509 \
     -sha384 \
     -days $DAYS \
@@ -37,7 +37,7 @@ export KEY_CN="$SERVER_CN"
 openssl req \
     -config "openssl.cnf" \
     -batch \
-    -noenc \
+    -noenv \
     -extensions server \
     -sha384 \
     -new \
