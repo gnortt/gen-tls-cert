@@ -2,7 +2,7 @@
 
 Self-signed TLS certificate generator. Quickly create a certificate authority and server key and certificate.
 
-Generated are CA and server `secp384r1` ECC keys, certificates, and Diffie-Hellman parameters (`dh[dh keysize].pem`).
+Generated are CA and server keys, certificates, and Diffie-Hellman parameters (`dh[dh keysize].pem`). `secp384r1` ECC keys are created by default, though `rsa` and `secp256k1` are also supported.
 
 # Requirements
 

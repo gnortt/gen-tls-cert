@@ -42,18 +42,32 @@ OUT_DIR="$(pwd)/$OUT_DIR"
 touch "$OUT_DIR"/index.txt
 
 export KEY_DIR="$OUT_DIR"
+export KEY_SIZE="$KEY_SIZE"
 export KEY_CN="$CA_CN"
+
+case "$TYPE" in
+    rsa)
+        openssl genrsa -out "$OUT_DIR/ca.key" $KEY_SIZE
+        openssl genrsa -out "$OUT_DIR/$SERVER_CN.key" $KEY_SIZE
+        ;;
+    secp384r1|secp256k1) 
+        openssl ecparam -genkey -name $TYPE -noout -out "$OUT_DIR/ca.key"
+        openssl ecparam -genkey -name $TYPE -noout -out "$OUT_DIR/$SERVER_CN.key"
+        ;; 
+    *)
+        echo "Invalid key type: choose one of rsa, secp256k1 or secp384r1";
+        exit 1;;
+esac
 
 openssl req \
     -config "openssl.cnf" \
     -batch \
-    -noenv \
+    -nodes \
     -x509 \
     -sha384 \
     -days $DAYS \
     -new \
-    -newkey ec:<(openssl ecparam -name secp384r1) \
-    -keyout "$OUT_DIR"/ca.key \
+    -key "$OUT_DIR"/ca.key \
     -out "$OUT_DIR"/ca.crt
 
 export KEY_CN="$SERVER_CN"
@@ -61,12 +75,11 @@ export KEY_CN="$SERVER_CN"
 openssl req \
     -config "openssl.cnf" \
     -batch \
-    -noenv \
+    -nodes \
     -extensions server \
     -sha384 \
     -new \
-    -newkey ec:<(openssl ecparam -name secp384r1) \
-    -keyout "$OUT_DIR/$SERVER_CN.key" \
+    -key "$OUT_DIR/$SERVER_CN.key" \
     -out "$OUT_DIR/$SERVER_CN.csr"
 
 openssl ca \

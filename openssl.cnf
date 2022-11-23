@@ -31,6 +31,7 @@ name=optional
 emailAddress=optional
 
 [ req ]
+default_bits=$ENV::KEY_SIZE
 default_keyfile=privkey.pem
 distinguished_name=req_distinguished_name
 x509_extensions=v3_ca
