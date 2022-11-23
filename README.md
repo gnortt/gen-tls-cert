@@ -15,9 +15,15 @@ Required dependencies:
 `gen-tls-cert.sh` needs a number of positional arguments:
 
 ```
-    Usage: ./gen-tls-cert.sh [output directory] [ca cn] [server cn] [dh keysize] [days]
+    Usage: ./gen-tls-cert.sh [options] <ca_cn> <server_cn>
 
-    > ./gen-tls-cert.sh example rootCA example.com 2048 365
+        Options:
+          -k    diffie-hellman parameter and rsa key size, default 2048 bits
+          -l    certificate lifetimes, default 365 days
+          -o    output directory, default <server_cn>
+          -t    key type (rsa, secp256k1 or secp384r1), default secp384r1
+
+    > ./gen-tls-cert.sh rootCA example.com
     > ls example
 
     01.pem  ca.key      example.com.crt  example.com.key  index.txt.attr  serial

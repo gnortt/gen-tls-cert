@@ -2,16 +2,40 @@
 
 set -e
 
-if [ $# -le 4 ]; then
-    echo "Usage: $0 [output directory] [ca cn] [server cn] [dh keysize] [days]"
+usage() {
+    echo "Usage: $0 [options] <ca_cn> <server_cn>
+
+    Options:
+      -k    diffie-hellman parameter and rsa key size, default 2048 bits
+      -l    certificate lifetimes, default 365 days
+      -o    output directory, default <server_cn>
+      -t    key type (rsa, secp256k1 or secp384r1), default secp384r1"
     exit 1
+}
+
+while getopts "k:l:o:t:" flag; do
+    case "$flag" in
+        k)  KEY_SIZE=$OPTARG;;
+        l)  DAYS=$OPTARG;;
+        o)  OUT_DIR=$OPTARG;;
+        t)  TYPE=$OPTARG;;
+        \?) usage;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+if [ $# -le 1 ]; then
+    usage
 fi
 
-OUT_DIR=$1
-CA_CN=$2
-SERVER_CN=$3
-KEY_SIZE=$4
-DAYS=$5
+CA_CN=$1
+SERVER_CN=$2
+
+: "${KEY_SIZE:=2048}"
+: "${DAYS:=365}"
+: "${OUT_DIR:=$SERVER_CN}"
+: "${TYPE:=secp384r1}"
 
 mkdir "$OUT_DIR"
 OUT_DIR="$(pwd)/$OUT_DIR"
