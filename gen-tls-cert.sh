@@ -6,6 +6,7 @@ usage() {
     echo "Usage: $0 [options] <ca_cn> <server_cn>
 
     Options:
+      -a    override subjectAltName, default DNS:SERVER_CN
       -k    diffie-hellman parameter and rsa key size, default 2048 bits
       -l    certificate lifetimes, default 365 days
       -o    output directory, default <server_cn>
@@ -16,6 +17,7 @@ usage() {
 
 while getopts "a:k:l:o:st:" flag; do
     case "$flag" in
+        a)  ALT_NAMES=$OPTARG;;
         k)  KEY_SIZE=$OPTARG;;
         l)  DAYS=$OPTARG;;
         o)  OUT_DIR=$OPTARG;;
@@ -34,6 +36,7 @@ fi
 CA_CN=$1
 SERVER_CN=$2
 
+: "${ALT_NAMES:=DNS:$SERVER_CN}"
 : "${KEY_SIZE:=2048}"
 : "${DAYS:=365}"
 : "${OUT_DIR:=$SERVER_CN}"
@@ -124,7 +127,7 @@ openssl req \
     -key "$OUT_DIR"/ca.key \
     -out "$OUT_DIR"/ca.crt
 
-export KEY_CN="$SERVER_CN"
+sed -i"" -e "s/commonName_default=${CA_CN}/commonName_default=${SERVER_CN}/" "$OUT_DIR"/openssl.cnf
 
 openssl req \
     -config "$OUT_DIR/openssl.cnf" \

@@ -18,6 +18,7 @@ Required dependencies:
     Usage: ./gen-tls-cert.sh [options] <ca_cn> <server_cn>
 
         Options:
+          -a    override subjectAltName, default DNS:SERVER_CN
           -k    diffie-hellman parameter and rsa key size, default 2048 bits
           -l    certificate lifetimes, default 365 days
           -o    output directory, default <server_cn>
