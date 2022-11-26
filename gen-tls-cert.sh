@@ -9,15 +9,17 @@ usage() {
       -k    diffie-hellman parameter and rsa key size, default 2048 bits
       -l    certificate lifetimes, default 365 days
       -o    output directory, default <server_cn>
+      -s    skip diffie-hellman parameter generation
       -t    key type (rsa, secp256k1 or secp384r1), default secp384r1"
     exit 1
 }
 
-while getopts "k:l:o:t:" flag; do
+while getopts "a:k:l:o:st:" flag; do
     case "$flag" in
         k)  KEY_SIZE=$OPTARG;;
         l)  DAYS=$OPTARG;;
         o)  OUT_DIR=$OPTARG;;
+        s)  SKIP_DH=1;;
         t)  TYPE=$OPTARG;;
         \?) usage;;
     esac
@@ -35,6 +37,7 @@ SERVER_CN=$2
 : "${KEY_SIZE:=2048}"
 : "${DAYS:=365}"
 : "${OUT_DIR:=$SERVER_CN}"
+: "${SKIP_DH:=}"
 : "${TYPE:=secp384r1}"
 
 mkdir "$OUT_DIR"
@@ -143,8 +146,10 @@ openssl ca \
     -in "$OUT_DIR/$SERVER_CN.csr" \
     -out "$OUT_DIR/$SERVER_CN.crt"
 
-openssl dhparam \
-    -out "$OUT_DIR/dh$KEY_SIZE.pem" $KEY_SIZE
+if [ -z "$SKIP_DH" ]; then
+    openssl dhparam \
+        -out "$OUT_DIR/dh$KEY_SIZE.pem" $KEY_SIZE
+fi
 
 chmod 0600 "$OUT_DIR"/ca.key
 chmod 0600 "$OUT_DIR/$SERVER_CN.key"

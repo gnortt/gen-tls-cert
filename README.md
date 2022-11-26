@@ -21,6 +21,7 @@ Required dependencies:
           -k    diffie-hellman parameter and rsa key size, default 2048 bits
           -l    certificate lifetimes, default 365 days
           -o    output directory, default <server_cn>
+          -s    skip diffie-hellman parameter generation
           -t    key type (rsa, secp256k1 or secp384r1), default secp384r1
 
     > ./gen-tls-cert.sh rootCA example.com
