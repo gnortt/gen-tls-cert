@@ -47,7 +47,6 @@ mkdir "$OUT_DIR"
 OUT_DIR="$(pwd)/$OUT_DIR"
 touch "$OUT_DIR"/index.txt
 
-export KEY_DIR="$OUT_DIR"
 echo "[ ca ]
 default_ca=ca_default
 
