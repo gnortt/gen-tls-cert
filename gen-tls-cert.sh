@@ -143,7 +143,7 @@ openssl ca \
     -config "$OUT_DIR/openssl.cnf" \
     -batch \
     -notext \
-    -rand_serial \
+    -create_serial \
     -extensions server \
     -days $DAYS \
     -in "$OUT_DIR/$SERVER_CN.csr" \

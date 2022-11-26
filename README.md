@@ -29,5 +29,5 @@ Required dependencies:
     > ls example
 
     01.pem  ca.key      example.com.crt  example.com.key  index.txt.attr  openssl.cnf
-    ca.crt  dh2048.pem  example.com.csr  index.txt        index.txt.old
+    ca.crt  dh2048.pem  example.com.csr  index.txt        index.txt.old   serial.txt
 ```
