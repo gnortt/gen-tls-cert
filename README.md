@@ -8,7 +8,7 @@ Generated are CA and server keys, certificates, and Diffie-Hellman parameters (`
 
 Required dependencies:
 
-- openssl
+- openssl (libressl supported)
 
 # Usage
 
