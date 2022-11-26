@@ -42,8 +42,59 @@ OUT_DIR="$(pwd)/$OUT_DIR"
 touch "$OUT_DIR"/index.txt
 
 export KEY_DIR="$OUT_DIR"
-export KEY_SIZE="$KEY_SIZE"
-export KEY_CN="$CA_CN"
+echo "[ ca ]
+default_ca=ca_default
+
+[ ca_default ]
+dir=${OUT_DIR}
+certs=\$dir
+new_certs_dir=\$dir
+database=\$dir/index.txt
+serial=\$dir/serial.txt
+certificate=\$dir/ca.crt
+private_key=\$dir/ca.key
+default_days=365
+default_md=sha256
+preserve=no
+policy=policy_default
+copy_extensions=copy
+
+[ policy_default ]
+countryName=optional
+stateOrProvinceName=optional
+localityName=optional
+organizationName=optional
+organizationalUnitName=optional
+commonName=supplied
+name=optional
+emailAddress=optional
+
+[ req ]
+default_bits=${KEY_SIZE}
+default_keyfile=privkey.key
+distinguished_name=req_dn
+x509_extensions=v3_ca
+string_mask=utf8only
+
+[ req_dn ]
+commonName=Common Name
+commonName_max=64
+commonName_default=${CA_CN}
+
+[ server ]
+basicConstraints=CA:FALSE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+extendedKeyUsage=serverAuth
+keyUsage=digitalSignature,keyEncipherment
+nsCertType=server
+subjectAltName=${ALT_NAMES}
+
+[ v3_ca ]
+basicConstraints=CA:TRUE
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
+" > "$OUT_DIR"/openssl.cnf
 
 case "$TYPE" in
     rsa)
@@ -60,7 +111,7 @@ case "$TYPE" in
 esac
 
 openssl req \
-    -config "openssl.cnf" \
+    -config "$OUT_DIR/openssl.cnf" \
     -batch \
     -nodes \
     -x509 \
@@ -73,7 +124,7 @@ openssl req \
 export KEY_CN="$SERVER_CN"
 
 openssl req \
-    -config "openssl.cnf" \
+    -config "$OUT_DIR/openssl.cnf" \
     -batch \
     -nodes \
     -extensions server \
@@ -83,7 +134,7 @@ openssl req \
     -out "$OUT_DIR/$SERVER_CN.csr"
 
 openssl ca \
-    -config "openssl.cnf" \
+    -config "$OUT_DIR/openssl.cnf" \
     -batch \
     -notext \
     -rand_serial \

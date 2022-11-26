@@ -26,6 +26,6 @@ Required dependencies:
     > ./gen-tls-cert.sh rootCA example.com
     > ls example
 
-    01.pem  ca.key      example.com.crt  example.com.key  index.txt.attr  serial
+    01.pem  ca.key      example.com.crt  example.com.key  index.txt.attr  openssl.cnf
     ca.crt  dh2048.pem  example.com.csr  index.txt        index.txt.old
 ```
